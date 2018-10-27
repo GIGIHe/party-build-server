@@ -4,7 +4,7 @@ module.exports = function(req, res, next) {
     next();
   } else {
     res.json({
-      code: 401,
+      code: 403,
       msg: "用户状态失效"
     });
   }
