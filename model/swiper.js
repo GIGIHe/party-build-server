@@ -2,15 +2,15 @@ const mongoose = require("mongoose");
 const swiper = new mongoose.Schema(  
     {
      imgUrl:{
-         type:Stirng,
+         type:String,
          required:true,
      },
      title:{
          type: String,
          required:true
      },
-     NewsId:{
-         type: Object,
+     newsId:{
+         type: mongoose.Schema.Types.ObjectId,
          ref:'news',
          require:true
      },

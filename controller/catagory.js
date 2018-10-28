@@ -5,9 +5,9 @@ const catagoryModel = require("../model/catagory"); //引入数据表模型 //
 // 新闻添加分类
 router.post("/", auth, async (req, res, next) => {
   try {
-    const { title } = req.body;
+    const { title,icon } = req.body;
     let data = await catagoryModel.create({
-        title
+        title,icon
     });
     res.json({
       code: 200,

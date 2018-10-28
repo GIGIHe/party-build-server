@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const catagory = new mongoose.Schema({
-    title:String
+    title:String,
+    icon:String
 },
 { versionKey: false,
 timestamps: { createdAt: "created_at", updatedAt:"updated_at"

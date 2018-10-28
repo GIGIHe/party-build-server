@@ -26,9 +26,10 @@ router.post("/", auth, async (req, res, next) => {
 //获取全部新闻
 router.get("/", async (req, res, next) => {
   try {
-    let { page = 1, page_size = 10 } = req.query,
-      pn = parseInt(page);
-    size = parseInt(page_size);
+    let count = await newsModel.count();
+    let { pn = 1, size = 10 } = req.query;
+    pn = parseInt(pn);
+    size = parseInt(size);
     let data = await newsModel
       .find()
       .skip((pn - 1) * size)
@@ -40,7 +41,7 @@ router.get("/", async (req, res, next) => {
       code: 200,
       data,
       msg: "查找成功",
-      count: data.length
+      count
     });
   } catch (error) {
     next(error);
@@ -52,8 +53,8 @@ router.get("/:id", async (req, res, next) => {
     let id = req.params.id;
     let data = await newsModel
       .findById(id)
-      .populate({ path: "user", select: "-password" })
-      .populate({ path: "catagory" });
+      .populate({ path: "author", select: "-password" })
+      .populate({ path: "type" });
     res.json({
       code: 200,
       data,
@@ -67,7 +68,7 @@ router.get("/:id", async (req, res, next) => {
 router.delete("/:id", auth, async (req, res, next) => {
   try {
     let id = req.params.id;
-    let news = await newsModel.findOneAndRemove(id);
+    let news = await newsModel.findByIdAndRemove(id);
     res.json({
       code: 200,
       msg: "删除成功"

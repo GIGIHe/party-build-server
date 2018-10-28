@@ -89,15 +89,15 @@ router.post("/login", async (req, res, next) => {
 router.get("/user", auth, async  (req, res, next) => {
   try {
     let count = await userModel.count();
-    let { page = 1, page_size = 10 } = req.query;
-    pn = parseInt(page);
-    size = parseInt(page_size);
+    let { pn = 1, size = 10 } = req.query;
+    let page = parseInt(pn);
+    let pagesize = parseInt(size);
     let user = await userModel
       .find()
-      .skip((pn - 1) * size)
-      .limit(size)
+      .skip((page - 1) * pagesize)
+      .limit(pagesize)
       .sort({ _id: -1 })
-      .select("-password")
+      .select("-password");
         res.json({
           code: 200,
           data:user,
@@ -148,6 +148,21 @@ router.patch("/user/:id", auth, async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+  // let user = userModel.findById(id);
+  //   res.json({
+  //     code: 200,
+  //     data:user,
+  //     msg: "修改成功"
+  // 不用async 时是异步的，不能当做同步操作
+  //   });
+  // 异步;
+  // userModel.findById(id).then(data => {
+  //   res.json({
+  //     code: 200,
+  //     data,
+  //     msg: "修改成功"
+  //   });
+  // });
 });
 // 用户退出登录，退出逻辑，判断用户是否登录，如果登录，清空用户信心，然后退出
 router.post("/logout", auth, async (req, res, next) => {
@@ -171,16 +186,37 @@ router.post("/logout", auth, async (req, res, next) => {
 router.delete("/user/:id", auth, async (req, res, next) => {
   let id = req.params.id;
   try {
-    let user = await userModel.findOneAndRemove(id);
+    let user = await userModel.findByIdAndRemove(id);
     res.json({
       code: 200,
-      user,
       msg: "删除成功"
     });
   } catch (error) {
     next(error);
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //删除管理员
 // router.delete('/del', auth, async (req, res, next) => {
 //   let { id } = req.query
