@@ -4,6 +4,8 @@ const adminUser = require('../controller/adminUser')
 const news = require('../controller/news')
 const catagory = require("../controller/catagory");
 const swiper = require("../controller/swiper");
+const topic = require("../controller/topic");
+const comment = require("../controller/comment");
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -12,4 +14,6 @@ router.use('/admin/adminUser',adminUser)
 router.use('/admin/news',news)
 router.use("/admin/catagory", catagory);
 router.use("/admin/swiper", swiper);
+router.use("/admin/topic", topic);
+router.use("/admin/comment", comment);
 module.exports = router;

@@ -29,7 +29,7 @@ router.get('/', auth, async (req, res, next) => {
         let {pn = 1,size = 10} = req.query
         pn = parseInt(pn)
         size = parseInt(size)
-        let data = await swiperModel.find().skip((pn - 1) * size).limit(size).sort({_id:-1}).populate({path:'newsId'
+        let data = await swiperModel.find().skip((pn - 1) * size).limit(size).sort({ sort: -1,_id:-1}).populate({path:'newsId'
     })
         res.json({
             code: 200,
@@ -60,7 +60,7 @@ router.get('/:id', auth, async (req, res, next) => {
 //编辑轮播图
 router.patch('/:id',auth,async (req,res,next)=>{
     try {
-        let { id } = req.params;
+        const { id } = req.params;
         let { imgUrl,
             title,
             newsId,
@@ -82,5 +82,19 @@ router.patch('/:id',auth,async (req,res,next)=>{
     } catch (error) {
         next(error)
     }
+})
+//删除
+router.delete('/:id',async (req,res,next)=>{
+let id = req.params.id
+try {
+    let data = await swiperModel.findByIdAndRemove(id)
+    res.json({
+        code:200,
+        data,
+        msg:'删除成功'
+    })
+} catch (error) {
+    next(error)
+}
 })
 module.exports = router

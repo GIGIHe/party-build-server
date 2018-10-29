@@ -21,10 +21,15 @@ router.post("/", auth, async (req, res, next) => {
 // 获取全部分类
 router.get("/", async (req, res, next) => {
   try {
-      let data = await catagoryModel.find().sort({_id:1});
+      let count = await catagoryModel.count()
+      let {pn=1,size=10} = req.query
+      pn = parseInt(pn)
+      size = parseInt(size)
+      let data = await catagoryModel.find().skip((pn-1)*size).limit(size).sort({_id:-1});
     res.json({
       code: 200,
       data,
+      count,
       msg: "获取分类成功"
     });
   } catch (error) {
@@ -45,4 +50,18 @@ router.get("/:id", async (req, res, next) => {
     next(error);
   }
 });
+//删除某条分类
+router.delete('/:id',async (req,res,next)=>{
+  try {
+    let id = req.params.id
+    let data = await catagoryModel.findByIdAndDelete(id)
+    res.json({
+      code:200,
+      data,
+      msg:'删除成功'
+    })
+  } catch (error) {
+    next(error)
+  }
+})
 module.exports = router;
