@@ -38,11 +38,12 @@ router.post("/", auth, async (req, res, next) => {
     next(error);
   }
 });
+// 获取一条主题下的所有评论
 router.get('/:topic_id', auth, async (req, res, next) => {
     try {
         let id = req.params.topic_id;
         let data = await commentModel
-          .findOne({topic:id})
+          .find({topic:id})
           .populate({ path: "author", select: "img nickname" });
         res.json({
             code: 200,

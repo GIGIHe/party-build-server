@@ -12,7 +12,6 @@ const swiper = new mongoose.Schema(
      newsId:{
          type: mongoose.Schema.Types.ObjectId,
          ref:'news',
-         require:true
      },
      status:{
          type:Number,
